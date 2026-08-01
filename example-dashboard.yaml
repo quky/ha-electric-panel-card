@@ -1,0 +1,67 @@
+# Every device and entity ID in this example is intentionally fictional.
+type: custom:ha-electric-panel-card
+title: Example Electrical Panel
+device_id: replace_with_home_assistant_device_id
+panel_size: 24
+show_empty_positions: true
+numbering_style: circuit
+measurement_decimals: 1
+energy_decimals: 2
+
+main:
+  name: Main Breaker
+  main_breaker_rating: 200 A
+  power_entity: sensor.example_home_total_power
+  current_entity: sensor.example_home_total_current
+  line_1_entity: sensor.example_home_line_1_power
+  line_2_entity: sensor.example_home_line_2_power
+
+clamps:
+  # Single-pole breaker at physical position 1.
+  - clamp: 1
+    entity: sensor.example_kitchen_power
+    name: Kitchen Receptacles
+    circuit: "1"
+    circuit_position: 1
+    breaker_type: single
+    breaker_rating: 20
+    unit: W
+
+  # Same-side two-pole breaker occupying positions 5 and 7 (N + 2).
+  - clamp: 2
+    entity: sensor.example_air_conditioner_power
+    name: Air Conditioner
+    circuit: "5-7"
+    circuit_position: 5
+    breaker_type: double
+    breaker_rating: 30
+    unit: W
+
+panel_positions:
+  # Tandem breaker with two independent measurements in one position.
+  - position: 9
+    entity: sensor.example_workshop_upper_power
+    name: Workshop Upper
+    circuit: "9A/B"
+    breaker_type: tandem
+    breaker_rating: 15
+    tandem_entity: sensor.example_workshop_lower_power
+    tandem_name: Workshop Lower
+    tandem_breaker_rating: 20
+    tandem_unit: W
+
+  # An unmonitored breaker has no entity assignment.
+  - position: 13
+    name: Spare Circuit
+    circuit: "13"
+    breaker_type: single
+    breaker_rating: 20
+
+  # Manual physical positions can extend beyond the 16 SEM clamp channels.
+  - position: 19
+    entity: sensor.example_garage_lights_power
+    name: Garage Lights
+    circuit: "19"
+    breaker_type: single
+    breaker_rating: 15
+    unit: auto

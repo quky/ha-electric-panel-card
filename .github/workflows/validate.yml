@@ -1,0 +1,47 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  card:
+    name: Card and metadata
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Check distributable JavaScript syntax
+        run: node --check dist/ha-electric-panel-card.js
+
+      - name: Check test JavaScript syntax
+        run: node --check ha-electric-panel-card.test.js
+
+      - name: Run card test suite
+        run: node ha-electric-panel-card.test.js
+
+      - name: Parse HACS manifest
+        run: node -e "JSON.parse(require('node:fs').readFileSync('hacs.json', 'utf8'))"
+
+      - name: Parse dashboard example
+        run: >-
+          ruby -e "require 'yaml'; YAML.safe_load_file('example-dashboard.yaml', aliases: false)"
+
+  hacs:
+    name: HACS repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate HACS dashboard repository
+        uses: hacs/action@main
+        with:
+          category: plugin
