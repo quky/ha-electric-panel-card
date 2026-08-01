@@ -45,7 +45,7 @@ An Emporia Vue running ESPHome can be displayed by manually assigning its Home A
 
 HACS installs the JavaScript file from this repository's `dist/` directory. It serves the installed file through a `/hacsfiles/` URL and normally manages the dashboard resource automatically.
 
-The repository is prepared for an initial `v1.0.0` release. After that release is published, HACS installations should use GitHub Releases for versioned downloads.
+The initial v1.0.0 release is available and can be installed through HACS as a custom Dashboard repository. After that release is published, HACS installations should use GitHub Releases for versioned downloads.
 
 ### Manual installation
 
